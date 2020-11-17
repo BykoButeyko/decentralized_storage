@@ -5,9 +5,19 @@ contract DStorage {
   string public name = 'DStorage';
   // Number of files
   // Mapping fileId=>Struct 
+  mapping( uint => File) public files;
 
   // Struct
-
+  struct File {
+    uint fileId;
+    string fileHash;
+    uint fileSize;
+    string fileType;
+    string fileName;
+    string fileDescription;
+    uint uploadTime;
+    address payable uploader;
+  }
 
   // Event
 
@@ -15,6 +25,10 @@ contract DStorage {
   }
 
   // Upload File function
+  function  uploadFile(string memory _fileHash, uint _fileSize, string memory _fileType, string memory _fileName, string memory _fileDescription) public {
+
+  files[1] = File(1, _fileHash, _fileSize, _fileType, _fileName, _fileDescription, now, msg.sender);
+  }
 
     // Make sure the file hash exists
 
