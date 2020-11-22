@@ -1,4 +1,4 @@
-//import DStorage from '../abis/DStorage.json'
+import DStorage from '../abis/DStorage.json'
 import React, { Component } from 'react';
 import Navbar from './Navbar'
 import Main from './Main'
@@ -6,7 +6,6 @@ import Web3 from 'web3';
 import './App.css';
 
 //Declare IPFS
-
 class App extends Component {
 
   async componentWillMount() {
@@ -31,22 +30,40 @@ class App extends Component {
   async loadBlockchainData() {
     //Declare Web3
     const web3 = window.web3
-    console.log(web3)
 
     //Load account
     const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0]})
+    
     //Network ID
+    const networkId = await web3.eth.net.getId()
+    const networkData = DStorage.networks[networkId]
 
     //IF got connection, get data from contracts
+    if(networkData) {
+
       //Assign contract
+      const dstorage = new web3.eth.Contract(DStorage.abi, networkData.address)
+      this.setState({ dstorage })
 
       //Get files amount
+      const filesCount = await dstorage.methods.fileCount().call()
+      this.setState({ filesCount })
 
       //Load files&sort by the newest
+      for (var i = filesCount; i >= 1; i--) {
+        const file = await dstorage.methods.files(i).call()
+        this.setState({
+          files: [...this.state.files, file]
+        })
+      }
+    } else {
+      window.alert('DStorage contract not deployed to detect network.')
+    }
 
     //Else
       //alert Error
+      this.setState({loading: false})
 
   }
 
@@ -75,6 +92,12 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      account: '',
+      dstorage: null,
+      files: [],
+      loading: false,
+      type: null,
+      name: null
     }
 
     //Bind functions
