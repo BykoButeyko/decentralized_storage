@@ -96,15 +96,37 @@ class App extends Component {
     //Add file to the IPFS
     ipfs.add(this.state.buffer, (error, result) => {
       console.log('IPFS result', result)
-    })
+
       //Check If error
-        //Return error
+      //Return error
+      if(error) {
+        console.error(error)
+        return
+      }
 
       //Set state to loading
+      this.setState({ loading: true})
 
       //Assign value for the file without extension
+      if(this.state.type === ''){
+        this.setState({ type: 'none'})
+      }
 
       //Call smart contract uploadFile function 
+      this.state.dstorage.methods.uploadFile( result[0].hash, result[0].size, this.state.type, this.state.name, description).send({ from: this.state.account}).on('transactionHash', (hash) => {
+        this.setState({
+          loading: false,
+          type: null,
+          name: null
+        })
+        window.location.reload()
+      }).on('error', (e) => {
+        window.alert('Error')
+        this.setState({ loading: false})
+      })
+    })
+
+      
 
   }
 
