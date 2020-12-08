@@ -7,17 +7,17 @@ This Dapp runs on local blockchain (Ganache),  you can fill the .env file with y
 
 Dependencies for this project:
 
--node.js
+- node.js
+- Ganache (local blockchain) *[Ganache] (https://www.trufflesuite.com/ganache)*
+- Truffle  `npm install truffle -g`
+- [Metamask] (https://metamask.io/) crypto wallet and gateway to blockchain apps
 
--Ganache (local blockchain) *[Ganache] (https://www.trufflesuite.com/ganache)*
 
--Truffle  `npm install truffle -g`
 
--[Metamask] (https://metamask.io/) crypto wallet and gateway to blockchain apps
 
-- Clone this repository and install the dependencies.
-- Start your react app server with this command in the terminal window (in project folder): `npm run start`
-- Setup your Metamask to connect to Ganache
+1. Clone this repository and install the dependencies.
+2. Start your react app server with this command in the terminal window (in project folder): `npm run start`
+3. Setup your Metamask to connect to Ganache
 
 ## Project Diagram:
 ![Project Diagram](https://i.imgur.com/e5v5i5x.png)
